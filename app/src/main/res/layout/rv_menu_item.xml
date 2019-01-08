@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <!--<ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.04"
+        android:background="@drawable/splash_screen_bg"
+        android:contentDescription="@string/app_name" />-->
+
+    <!--<HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:measureAllChildren="false"
+        android:scrollbars="none">
+
+        <TableLayout
+            android:id="@+id/tl_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+        </TableLayout>
+
+    </HorizontalScrollView>-->
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/cornered_button"
+            android:layout_marginStart="10dp"
+            android:text="Dosa"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+
+        <include layout="@layout/number_layout"
+            android:layout_height="27dp"
+            android:layout_marginEnd="5dp"
+            android:layout_width="wrap_content"/>
+
+</LinearLayout>
