@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Tasteful</string>
     <string name="anti_matter">by Anti Matter</string>
+
+    <string-array name="food_items">
+        <item>Idli Vada</item>
+        <item>Dosa</item>
+        <item>Poori</item>
+    </string-array>
 </resources>
