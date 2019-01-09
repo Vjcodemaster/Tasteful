@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
     <ImageView
@@ -12,93 +13,149 @@
         android:background="@drawable/splash_screen_bg"
         android:contentDescription="@string/app_name" />
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:background="@drawable/cornered_button"
-            android:baselineAligned="false">
-
-            <TextView
-                android:layout_width="0dp"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_weight=".02"
-                android:textAppearance="@android:style/TextAppearance.Medium"/>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".16">
-
-                <TextView
-                    android:id="@+id/tv_menu_item_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:textStyle="bold"
-                    android:paddingEnd="16dp"
-                    android:maxLines="1"
-                    android:text="Menu Item"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/tv_price_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Price"
-                android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".1">
-
-                <TextView
-                    android:id="@+id/tv_quantity_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textStyle="bold"
-                    android:maxLines="1"
-                    android:paddingStart="18dp"
-                    android:paddingEnd="18dp"
-                    android:text="Quantity"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_menu_item_list"
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
             android:layout_height="match_parent"
-            android:scrollbars="vertical" />
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
-        <!--<Button
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_height="30dp"
-            android:paddingEnd="10dp"
-            android:foreground="?attr/selectableItemBackground"
-            android:paddingStart="10dp"
-            android:textColor="@android:color/white"
-            android:text="Place Order"
-            android:layout_gravity="center"
-            android:background="@drawable/cornered_button_gold"/>-->
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:paddingBottom="3dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingTop="14dp"
+                android:theme="@style/AppTheme.AppBarOverlay">
 
-    </LinearLayout>
+                <!--app:tabBackground="@drawable/home_tab_color_selector"-->
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:requiresFadingEdge="horizontal"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="4dp"
+                    app:tabMaxWidth="0dp"
+                    app:tabMinWidth="80dp"
+                    app:tabMode="scrollable"
+                    app:tabPaddingEnd="40dp"
+                    app:tabPaddingStart="40dp"
+                    app:tabSelectedTextColor="@color/colorGold"
+                    app:tabTextColor="@color/colorPrimaryDark"/>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <View
+                android:id="@+id/view_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@drawable/drop_shadow"
+                android:visibility="visible"/>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        </LinearLayout>
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:background="@drawable/cornered_button"
+                android:baselineAligned="false">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".02"
+                    android:textAppearance="@android:style/TextAppearance.Medium"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".16">
+
+                    <TextView
+                        android:id="@+id/tv_menu_item_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:textStyle="bold"
+                        android:paddingEnd="16dp"
+                        android:maxLines="1"
+                        android:text="Menu Item"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_price_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Price"
+                    android:textColor="@android:color/white" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".1">
+
+                    <TextView
+                        android:id="@+id/tv_quantity_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+                        android:text="Quantity"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_menu_item_list"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+
+            &lt;!&ndash;<Button
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_height="30dp"
+                android:paddingEnd="10dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:paddingStart="10dp"
+                android:textColor="@android:color/white"
+                android:text="Place Order"
+                android:layout_gravity="center"
+                android:background="@drawable/cornered_button_gold"/>&ndash;&gt;
+
+        </LinearLayout>-->
+
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -123,24 +180,24 @@
             android:layout_centerVertical="true"
             android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_total_items"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="10dp"
-            android:textColor="@android:color/white"
-            android:paddingStart="10dp"
-            android:text="@string/zero_items"/>
+            <TextView
+                android:id="@+id/tv_total_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="10dp"
+                android:textColor="@android:color/white"
+                android:paddingStart="10dp"
+                android:text="@string/zero_items"/>
 
-        <TextView
-            android:id="@+id/tv_total_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="10dp"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:paddingStart="10dp"
-            android:textColor="@android:color/white"
-            android:text="@string/rupee_zero"/>
+            <TextView
+                android:id="@+id/tv_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="10dp"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:paddingStart="10dp"
+                android:textColor="@android:color/white"
+                android:text="@string/rupee_zero"/>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.MenuItemTabHolder> {
 
@@ -33,7 +32,7 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
     @NonNull
     @Override
     public MenuItemTabHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_menu_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_food_bevarages, parent, false);
 
         return new MenuItemTabHolder(view);
     }
