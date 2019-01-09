@@ -1,10 +1,19 @@
 <resources>
     <string name="app_name">Tasteful</string>
     <string name="anti_matter">by Anti Matter</string>
+    <string name="rupee">\u20B9</string>
+    <string name="rupee_zero">\u20B90</string>
+    <string name="zero_items">0 items</string>
 
     <string-array name="food_items">
         <item>Idli Vada</item>
         <item>Dosa</item>
         <item>Poori</item>
+    </string-array>
+
+    <string-array name="food_price">
+        <item>\u20B930</item>
+        <item>\u20B940</item>
+        <item>\u20B940</item>
     </string-array>
 </resources>
