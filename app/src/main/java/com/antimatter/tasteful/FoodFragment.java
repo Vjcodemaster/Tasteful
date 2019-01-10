@@ -100,7 +100,7 @@ public class FoodFragment extends Fragment {
 
         ArrayList<String> alFoodItems = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.food_items)));
         ArrayList<String> alFoodPrice = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.food_price)));
-        menuItemRVAdapter = new MenuItemRVAdapter(getActivity(), recyclerView, alFoodItems, alFoodPrice);
+        menuItemRVAdapter = new MenuItemRVAdapter(getActivity(), recyclerView, alFoodItems, alFoodPrice, 1);
         recyclerView.setAdapter(menuItemRVAdapter);
         return view;
     }

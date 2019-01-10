@@ -98,9 +98,9 @@ public class BevaragesFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-        ArrayList<String> alFoodItems = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.food_items)));
-        ArrayList<String> alFoodPrice = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.food_price)));
-        menuItemRVAdapter = new MenuItemRVAdapter(getActivity(), recyclerView, alFoodItems, alFoodPrice);
+        ArrayList<String> alBeverageItems = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.beverage_items)));
+        ArrayList<String> alBeveragePrice = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.beverage_price)));
+        menuItemRVAdapter = new MenuItemRVAdapter(getActivity(), recyclerView, alBeverageItems, alBeveragePrice, 2);
         recyclerView.setAdapter(menuItemRVAdapter);
         return view;
     }

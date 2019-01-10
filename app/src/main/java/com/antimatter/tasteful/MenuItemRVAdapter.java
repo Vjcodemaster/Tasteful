@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,12 +22,14 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
     //HashSet<Integer> hsTotalItems = new HashSet<>();
     private int nTotalItems = 0;
     private int nTotalPrice = 0;
+    private int nCase = 1;
 
-    MenuItemRVAdapter(Context context, RecyclerView recyclerView, ArrayList alFoodItems, ArrayList<String> alFoodPrice) {
+    MenuItemRVAdapter(Context context, RecyclerView recyclerView, ArrayList alFoodItems, ArrayList<String> alFoodPrice, int nCase) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.alFoodItems = alFoodItems;
         this.alFoodPrice = alFoodPrice;
+        this.nCase = nCase;
     }
 
     @NonNull
@@ -39,6 +42,9 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
 
     @Override
     public void onBindViewHolder(@NonNull final MenuItemTabHolder holder, final int position) {
+        if(nCase == 2){
+            holder.ibVegNonVeg.setVisibility(View.INVISIBLE);
+        }
         holder.tvMenuItem.setText(alFoodItems.get(position));
         holder.tvItemPrice.setText(alFoodPrice.get(position));
 
@@ -49,7 +55,8 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
                 n++;
                 if (n == 1) {
                     holder.tvTotalItemPrice.setVisibility(View.VISIBLE);
-                    nTotalItems++;
+                    //nTotalItems++;
+                    MainActivity.nTotalItems++;
 
                     //hsTotalItems.add(holder.getAdapterPosition());
                 }
@@ -58,8 +65,9 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
                 holder.tvTotalItemPrice.setText(String.valueOf(totalPrice));
                 holder.tvQuantity.setText(String.valueOf(n));
                 nTotalPrice = nTotalPrice + Integer.valueOf(sItemPrice);
-                String sResult = String.valueOf(nTotalItems) + "," + String.valueOf(nTotalPrice);
-                MainActivity.onAsyncInterfaceListener.onResultReceived("UPDATE_ITEM_AND_PRICE", 1, sResult);
+                //String sResult = String.valueOf(nTotalItems) + "," + String.valueOf(nTotalPrice)+ "," + "+";
+                String sResult = String.valueOf(nTotalItems) + "," + sItemPrice+ "," + "+";
+                MainActivity.onAsyncInterfaceListener.onResultReceived("UPDATE_ITEM_AND_PRICE", nCase, sResult);
             }
         });
 
@@ -73,7 +81,8 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
                 else if (n == 0) {
                     holder.tvTotalItemPrice.setVisibility(View.INVISIBLE);
                     //hsTotalItems.remove(holder.getAdapterPosition());
-                    nTotalItems--;
+                    //nTotalItems--;
+                    MainActivity.nTotalItems--;
                 }
                 if (n >= 0) {
                     String sItemPrice = alFoodPrice.get(position).substring(1);
@@ -81,7 +90,8 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
                     holder.tvTotalItemPrice.setText(String.valueOf(totalPrice));
                     nTotalPrice = nTotalPrice - Integer.valueOf(sItemPrice);
                     //holder.tvQuantity.setVisibility(View.VISIBLE);
-                    String sResult = String.valueOf(nTotalItems) + "," + String.valueOf(nTotalPrice);
+
+                    String sResult = String.valueOf(nTotalItems) + "," + String.valueOf(sItemPrice) + "," + "-";
                     holder.tvQuantity.setText(String.valueOf(n));
                     MainActivity.onAsyncInterfaceListener.onResultReceived("UPDATE_ITEM_AND_PRICE", 1, sResult);
                 }
@@ -107,6 +117,7 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
         TextView tvItemPrice;
         Button btnPlus;
         Button btnMinus;
+        ImageButton ibVegNonVeg;
 
         MenuItemTabHolder(View itemView) {
             super(itemView);
@@ -114,6 +125,7 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
             tvQuantity = itemView.findViewById(R.id.tv_quantity);
             tvItemPrice = itemView.findViewById(R.id.tv_item_price);
             tvTotalItemPrice = itemView.findViewById(R.id.tv_price_header);
+            ibVegNonVeg = itemView.findViewById(R.id.ib_veg_nonveg);
             //tvSlNo = itemView.findViewById(R.id.tv_sl_no);
             btnPlus = itemView.findViewById(R.id.btn_plus);
             btnMinus = itemView.findViewById(R.id.btn_minus);

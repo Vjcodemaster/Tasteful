@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Stack;
@@ -15,6 +17,13 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
     Stack<Integer> pageHistory;
     int currentPage;
     boolean saveToHistory;
+    private int nTotalPriceFood = 0;
+    private int nTotalItemsFood = 0;
+    private int nTotalPriceBeverage = 0;
+    private int nTotalItemsBeverage = 0;
+    int finalPrice = 0;
+    int finalItems = 0;
+    public static int nTotalItems = 0;
 
     private ViewPager mViewPager;
     private TabLayout tabLayout;
@@ -22,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
     public MenuItemRVAdapter menuItemRVAdapter;
     TextView tvMenuItem, tvQuantity, tvPrice;*/
     TextView tvTotalItems, tvTotalPrice;
+    private Button btnPlaceOrder;
     public static OnAsyncInterfaceListener onAsyncInterfaceListener;
 
     @Override
@@ -31,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
 
         onAsyncInterfaceListener = this;
         pageHistory = new Stack<>();
+        nTotalItems = 0;
 
         mViewPager = findViewById(R.id.viewpager_container);
 
@@ -67,6 +78,14 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
 
         tvTotalItems = findViewById(R.id.tv_total_items);
         tvTotalPrice = findViewById(R.id.tv_total_price);
+        btnPlaceOrder = findViewById(R.id.btn_place_order);
+
+        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         /*tvMenuItem.setTypeface(font);
         tvQuantity.setTypeface(font);
@@ -93,12 +112,35 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
 
     @Override
     public void onResultReceived(String sMessage, int nCase, String sResult) {
-        switch (sMessage){
+        switch (sMessage) {
             case "UPDATE_ITEM_AND_PRICE":
-                String sTotalItems = sResult.split(",")[0] + " items";
-                String sTotalPrice = getResources().getString(R.string.rupee) + sResult.split(",")[1];
-                tvTotalItems.setText(sTotalItems);
-                tvTotalPrice.setText(sTotalPrice);
+                int Price = Integer.valueOf(sResult.split(",")[1]);
+                //int items = Integer.valueOf(sResult.split(",")[0]);
+                String sArithmetic = sResult.split(",")[2];
+                //String sTotalItems = sResult.split(",")[0] + " items";
+                //String sTotalPrice = getResources().getString(R.string.rupee) + sResult.split(",")[1];
+                /*tvTotalItems.setText(sTotalItems);
+                tvTotalPrice.setText(sTotalPrice);*/
+                /*switch (nCase) {
+                    case 1:
+                        nTotalPriceFood = Integer.valueOf(sResult.split(",")[1]);
+                        nTotalItemsFood = Integer.valueOf(sResult.split(",")[0]);
+                        break;
+                    case 2:
+                        nTotalPriceBeverage = Integer.valueOf(sResult.split(",")[1]);
+                        nTotalItemsBeverage = Integer.valueOf(sResult.split(",")[0]);
+                        break;
+                }*/
+
+                if (sArithmetic.equals("+")) {
+                    finalPrice = finalPrice + Price;
+                    //finalItems = nTotalItemsFood + nTotalItemsBeverage;
+                } else {
+                    finalPrice = finalPrice - Price;
+                    //finalItems = items;
+                }
+                tvTotalItems.setText(String.valueOf(nTotalItems));
+                tvTotalPrice.setText(String.valueOf(finalPrice));
                 break;
         }
     }
