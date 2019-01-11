@@ -1,8 +1,8 @@
 package com.antimatter.tasteful;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.MenuItemTabHolder> {
 
@@ -22,14 +24,19 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
     //HashSet<Integer> hsTotalItems = new HashSet<>();
     private int nTotalItems = 0;
     private int nTotalPrice = 0;
+    MainActivity.DataStorage dataStorage;
     private int nCase = 1;
+    ArrayList<String> alFood = new ArrayList<>();
+    ArrayList<String> alQuantity = new ArrayList<>();
+    LinkedHashMap<String, String> lhmFoodAndQuantity = new LinkedHashMap<>();
 
-    MenuItemRVAdapter(Context context, RecyclerView recyclerView, ArrayList alFoodItems, ArrayList<String> alFoodPrice, int nCase) {
+    MenuItemRVAdapter(Context context, RecyclerView recyclerView, ArrayList alFoodItems, ArrayList<String> alFoodPrice, int nCase, MainActivity.DataStorage dataStorage) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.alFoodItems = alFoodItems;
         this.alFoodPrice = alFoodPrice;
         this.nCase = nCase;
+        this.dataStorage = dataStorage;
     }
 
     @NonNull
@@ -56,8 +63,10 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
                 if (n == 1) {
                     holder.tvTotalItemPrice.setVisibility(View.VISIBLE);
                     //nTotalItems++;
+                    //alFood.add(holder.tvMenuItem.getText().toString());
+                    //alQuantity.add(holder.tvQuantity.getText().toString());
                     MainActivity.nTotalItems++;
-
+                    dataStorage.lhmFoodAndQuantity.put(holder.tvMenuItem.getText().toString(), holder.tvQuantity.getText().toString());
                     //hsTotalItems.add(holder.getAdapterPosition());
                 }
                 String sItemPrice = alFoodPrice.get(position).substring(1);
@@ -65,9 +74,10 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
                 holder.tvTotalItemPrice.setText(String.valueOf(totalPrice));
                 holder.tvQuantity.setText(String.valueOf(n));
                 nTotalPrice = nTotalPrice + Integer.valueOf(sItemPrice);
+                dataStorage.lhmFoodAndQuantity.put(holder.tvMenuItem.getText().toString(), holder.tvQuantity.getText().toString());
                 //String sResult = String.valueOf(nTotalItems) + "," + String.valueOf(nTotalPrice)+ "," + "+";
                 String sResult = String.valueOf(nTotalItems) + "," + sItemPrice+ "," + "+";
-                MainActivity.onAsyncInterfaceListener.onResultReceived("UPDATE_ITEM_AND_PRICE", nCase, sResult);
+                MainActivity.onAsyncInterfaceListener.onResultReceived("UPDATE_ITEM_AND_PRICE", nCase, sResult, lhmFoodAndQuantity);
             }
         });
 
@@ -83,6 +93,7 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
                     //hsTotalItems.remove(holder.getAdapterPosition());
                     //nTotalItems--;
                     MainActivity.nTotalItems--;
+                    dataStorage.lhmFoodAndQuantity.remove(holder.tvMenuItem.getText().toString());
                 }
                 if (n >= 0) {
                     String sItemPrice = alFoodPrice.get(position).substring(1);
@@ -90,10 +101,11 @@ public class MenuItemRVAdapter extends RecyclerView.Adapter<MenuItemRVAdapter.Me
                     holder.tvTotalItemPrice.setText(String.valueOf(totalPrice));
                     nTotalPrice = nTotalPrice - Integer.valueOf(sItemPrice);
                     //holder.tvQuantity.setVisibility(View.VISIBLE);
-
+                    if(n!=0)
+                        dataStorage.lhmFoodAndQuantity.put(holder.tvMenuItem.getText().toString(), String.valueOf(n));
                     String sResult = String.valueOf(nTotalItems) + "," + String.valueOf(sItemPrice) + "," + "-";
                     holder.tvQuantity.setText(String.valueOf(n));
-                    MainActivity.onAsyncInterfaceListener.onResultReceived("UPDATE_ITEM_AND_PRICE", 1, sResult);
+                    MainActivity.onAsyncInterfaceListener.onResultReceived("UPDATE_ITEM_AND_PRICE", 1, sResult, lhmFoodAndQuantity);
                 }
             }
         });

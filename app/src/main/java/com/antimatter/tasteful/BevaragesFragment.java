@@ -2,12 +2,13 @@ package com.antimatter.tasteful;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +79,7 @@ public class BevaragesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_bevarages, container, false);
+        View view = inflater.inflate(R.layout.fragment_bevarages, container, false);
         recyclerView = view.findViewById(R.id.rv_menu_item_list);
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/quesha.ttf");
         tvMenuItem = view.findViewById(R.id.tv_menu_item_header);
@@ -93,14 +94,14 @@ public class BevaragesFragment extends Fragment {
         tvPrice.setTextSize(26);
 
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mLinearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
         ArrayList<String> alBeverageItems = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.beverage_items)));
         ArrayList<String> alBeveragePrice = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.beverage_price)));
-        menuItemRVAdapter = new MenuItemRVAdapter(getActivity(), recyclerView, alBeverageItems, alBeveragePrice, 2);
+        menuItemRVAdapter = new MenuItemRVAdapter(getActivity(), recyclerView, alBeverageItems, alBeveragePrice, 2, MainActivity.dataStorage);
         recyclerView.setAdapter(menuItemRVAdapter);
         return view;
     }

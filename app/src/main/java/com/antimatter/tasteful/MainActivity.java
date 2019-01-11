@@ -1,15 +1,26 @@
 package com.antimatter.tasteful;
 
+import android.animation.Animator;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.tabs.TabLayout;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Stack;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 import app_utility.OnAsyncInterfaceListener;
 
 public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceListener {
@@ -17,28 +28,33 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
     Stack<Integer> pageHistory;
     int currentPage;
     boolean saveToHistory;
-    private int nTotalPriceFood = 0;
-    private int nTotalItemsFood = 0;
-    private int nTotalPriceBeverage = 0;
-    private int nTotalItemsBeverage = 0;
+//    private int nTotalPriceFood = 0;
+//    private int nTotalItemsFood = 0;
+//    private int nTotalPriceBeverage = 0;
+//    private int nTotalItemsBeverage = 0;
     int finalPrice = 0;
-    int finalItems = 0;
+    public static int finalPrices = 0;
+    //int finalItems = 0;
     public static int nTotalItems = 0;
 
     private ViewPager mViewPager;
     private TabLayout tabLayout;
+
+    public static DataStorage dataStorage ;
     /*RecyclerView recyclerView;
     public MenuItemRVAdapter menuItemRVAdapter;
     TextView tvMenuItem, tvQuantity, tvPrice;*/
     TextView tvTotalItems, tvTotalPrice;
     private Button btnPlaceOrder;
+    private FrameLayout llLotteParent;
+    private LottieAnimationView lottieAnimationView;
     public static OnAsyncInterfaceListener onAsyncInterfaceListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        dataStorage = new DataStorage();
         onAsyncInterfaceListener = this;
         pageHistory = new Stack<>();
         nTotalItems = 0;
@@ -79,11 +95,48 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
         tvTotalItems = findViewById(R.id.tv_total_items);
         tvTotalPrice = findViewById(R.id.tv_total_price);
         btnPlaceOrder = findViewById(R.id.btn_place_order);
+        llLotteParent = findViewById(R.id.ll_animation_parent);
+        lottieAnimationView = findViewById(R.id.lottie_view);
 
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*Intent in = new Intent(MainActivity.this, SocketService.class);
+                startService(in);*/
+                MyTask myTask = new MyTask();
+                myTask.execute();
 
+                llLotteParent.setVisibility(View.VISIBLE);
+                lottieAnimationView.addAnimatorListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                llLotteParent.setVisibility(View.GONE);
+                                //Do something after 100ms
+                            }
+                        }, 2500);
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                });
+                lottieAnimationView.playAnimation();
             }
         });
 
@@ -108,12 +161,15 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 2, 0);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
     }
 
     @Override
-    public void onResultReceived(String sMessage, int nCase, String sResult) {
+    public void onResultReceived(String sMessage, int nCase, String sResult, LinkedHashMap<String, String> lhmFoodAndQuantity) {
         switch (sMessage) {
             case "UPDATE_ITEM_AND_PRICE":
+                //MainActivity.lhmFoodAndQuantity = lhmFoodAndQuantity;
+                //dataStorage.lhmFoodAndQuantity = lhmFoodAndQuantity;
                 int Price = Integer.valueOf(sResult.split(",")[1]);
                 //int items = Integer.valueOf(sResult.split(",")[0]);
                 String sArithmetic = sResult.split(",")[2];
@@ -141,7 +197,65 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
                 }
                 tvTotalItems.setText(String.valueOf(nTotalItems));
                 tvTotalPrice.setText(String.valueOf(finalPrice));
+                finalPrices = finalPrice;
                 break;
         }
+    }
+
+    private class MyTask extends AsyncTask<String, Integer, String> {
+
+        // Runs in UI before background thread is called
+        @Override
+        protected void onPreExecute() {
+
+            // Do something like display a progress bar
+        }
+
+        // This is run in a background thread
+        @Override
+        protected String doInBackground(String... params) {
+            sendRequest();
+            return null;
+        }
+
+        // This is called from background thread but runs in UI
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+
+            // Do things like update the progress bar
+        }
+
+        // This runs in UI when background thread finishes
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            // Do things like hide the progress bar or change a TextView
+        }
+    }
+
+    void sendRequest(){
+        Socket socket;
+        try {
+            socket = new Socket("192.168.0.130",100);
+            DataOutputStream DOS = new DataOutputStream(socket.getOutputStream());
+            ArrayList<String> alFood = new ArrayList<>(dataStorage.lhmFoodAndQuantity.keySet());
+            ArrayList<String> alQuantity = new ArrayList<>(dataStorage.lhmFoodAndQuantity.values());
+            StringBuilder sb = new StringBuilder();
+            for (int i=0; i<alFood.size(); i++){
+                sb.append(alFood.get(i)).append("-").append(alQuantity.get(i)).append(System.getProperty("line.separator"));
+            }
+            sb.append(System.getProperty("line.separator"));
+            sb.append("Total").append("-").append(MainActivity.finalPrices);
+            DOS.writeUTF(sb.toString());
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class DataStorage{
+        public LinkedHashMap<String, String> lhmFoodAndQuantity = new LinkedHashMap<>();
     }
 }

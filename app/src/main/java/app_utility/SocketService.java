@@ -6,14 +6,16 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
+import com.antimatter.tasteful.MainActivity;
 import com.antimatter.tasteful.R;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,11 +23,14 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
-import static android.support.v4.app.NotificationCompat.PRIORITY_MAX;
+import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
 
 public class SocketService extends Service {
     public static SocketService refOfService;
+
     NotificationManager notifyMgr;
     NotificationCompat.Builder nBuilder;
     NotificationCompat.InboxStyle inboxStyle;
@@ -47,6 +52,9 @@ public class SocketService extends Service {
         refOfService = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForeground();
+           /* MyTask myTask = new MyTask();
+            myTask.execute();*/
+            //sendRequest();
         }
     }
 
@@ -95,16 +103,5 @@ public class SocketService extends Service {
         }
     }
 
-    void sendRequest(){
-        Socket socket;
-        try {
-            socket = new Socket("192.168.0.1",1755);
-            DataOutputStream DOS = new DataOutputStream(socket.getOutputStream());
-            DOS.writeUTF("HELLO_WORLD");
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-    }
 }

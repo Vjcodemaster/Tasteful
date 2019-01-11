@@ -1,7 +1,9 @@
 package app_utility;
 
+import java.util.LinkedHashMap;
+
 public interface OnAsyncInterfaceListener {
-    void onResultReceived(String sMessage, int nCase, String sResult);
+    void onResultReceived(String sMessage, int nCase, String sResult, LinkedHashMap<String, String> lhmFoodAndQuantity);
 
     //void onResultReceived(String sMessage, int nCase, double dLatitudeStart, double dLongitudeStart, double dLatitudeEnd, double dLongitudeEnd);
 
