@@ -54,10 +54,14 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         dataStorage = new DataStorage();
         onAsyncInterfaceListener = this;
         pageHistory = new Stack<>();
         nTotalItems = 0;
+
+        dataStorage.sEmpID = getIntent().getStringExtra("EMP_ID");
+        dataStorage.sTableNumber = getIntent().getStringExtra("TABLE_NUMBER");
 
         mViewPager = findViewById(R.id.viewpager_container);
 
@@ -243,6 +247,8 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
             ArrayList<String> alFood = new ArrayList<>(dataStorage.lhmFoodAndQuantity.keySet());
             ArrayList<String> alQuantity = new ArrayList<>(dataStorage.lhmFoodAndQuantity.values());
             StringBuilder sb = new StringBuilder();
+            sb.append("EmployeeID-").append(dataStorage.sEmpID);
+            sb.append("TableNumber-").append(dataStorage.sTableNumber);
             for (int i=0; i<alFood.size(); i++){
                 sb.append(alFood.get(i)).append("-").append(alQuantity.get(i)).append(System.getProperty("line.separator"));
             }
@@ -256,6 +262,8 @@ public class MainActivity extends AppCompatActivity implements OnAsyncInterfaceL
     }
 
     public class DataStorage{
-        public LinkedHashMap<String, String> lhmFoodAndQuantity = new LinkedHashMap<>();
+        LinkedHashMap<String, String> lhmFoodAndQuantity = new LinkedHashMap<>();
+        String sEmpID;
+        String sTableNumber;
     }
 }
