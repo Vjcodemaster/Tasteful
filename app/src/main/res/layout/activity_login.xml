@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Table Number : "
+                android:text="Table Number"
                 android:textAppearance="@android:style/TextAppearance.Large"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -64,17 +64,16 @@
                 android:id="@+id/tv_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/colorGold"
                 android:gravity="center"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:text="25"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:textColor="@android:color/white"
                 android:visibility="gone" />
         </LinearLayout>
-
 
         <View
             android:layout_width="match_parent"
